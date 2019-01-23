@@ -44,7 +44,9 @@ const TwitchEBS = module.exports = {
 // }
 
 const EXPIRATION_TIME = 1000
+
 const TWITCH_EXT_CHAT_URL = new Urrl("https://api.twitch.tv/extensions/{clientId}/{extensionVersion}/channels/{channelId}/chat")
+const TWITCH_EXT_LIVE_CHANNELS_URL = new Urrl("https://api.twitch.tv/extensions/{clientId}/live_activated_channels")
 
 module.exports.sendChatMessage = async function chat(channelId, text) {
     channelId = channelId + ""
@@ -75,4 +77,13 @@ module.exports.sendChatMessage = async function chat(channelId, text) {
         },
         "body": {"text": text},
     })
+}
+
+module.exports.retrieveLiveChannels = async function() {
+    let response = await fetchquest({
+        "url": TWITCH_EXT_LIVE_CHANNELS_URL({"clientId": TwitchEBS.extension.id}),
+        "headers": {"Client-ID": TwitchEBS.extension.id}
+    })
+
+    return response.channels
 }
