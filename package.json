@@ -1,0 +1,22 @@
+{
+  "name": "twitch-ebs",
+  "version": "1.0.0",
+  "description": "An easy-to-use library for all of the Twitch Extension HTTP APIs",
+  "author": "Andrew McPherson <@ehgoodenough>",
+  "main": "twitch-ebs.js",
+  "bin": "twitch-ebs.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ehgoodenough/twitch-ebs"
+  },
+  "dependencies": {
+    "fetchquest": "^1.1.0",
+    "jsonwebtoken": "^8.4.0",
+    "lodash": "^4.17.11",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5",
+    "secretsauce": "^1.0.1",
+    "urrl": "^1.0.0"
+  }
+}
