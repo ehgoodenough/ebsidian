@@ -1,13 +1,13 @@
-const TwitchEBS = require(".")
+const Ebsidian = require(".")
 const SecretSauce = require("secretsauce")
 
 async function test() {
-    TwitchEBS.extension.id = "ub1t6tr0utja1bvqu661bt3o5w5tr8"
-    TwitchEBS.extension.secret = await SecretSauce.get("dex-twitchext-secret")
-    TwitchEBS.extension.version = "0.0.1"
+    Ebsidian.extension.id = "ub1t6tr0utja1bvqu661bt3o5w5tr8"
+    Ebsidian.extension.secret = await SecretSauce.get("dex-twitchext-secret")
+    Ebsidian.extension.version = "0.0.1"
 
-    // TwitchEBS.broadcastPubsubMessage("88171886", {"greetings": "Hello World!!"})
-    // TwitchEBS.sendChatMessage("88171886", "Hello World!!")
+    // Ebsidian.broadcastPubsubMessage("88171886", {"greetings": "Hello World!!"})
+    // Ebsidian.sendChatMessage("88171886", "Hello World!!")
 }
 
 test().then((response) => {

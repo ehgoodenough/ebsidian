@@ -10,7 +10,7 @@ const TWITCH_EXT_PUBSUB_URL = new Urrl("https://api.twitch.tv/extensions/message
 
 const EXPIRATION_TIME = 1000
 
-const TwitchEBS = module.exports = {
+const Ebsidian = module.exports = {
     "extension": {
         "id": undefined,
         "secret": undefined,
@@ -18,20 +18,20 @@ const TwitchEBS = module.exports = {
     }
 }
 
-TwitchEBS.generateToken = function(payload) {
+Ebsidian.generateToken = function(payload) {
     payload.exp = payload.exp || Date.now() + EXPIRATION_TIME
     payload.role = payload.role || "external"
     payload.user_id = payload.user_id || "1234567890"
 
-    return jwt.sign(payload, Buffer.from(TwitchEBS.extension.secret, "base64"))
+    return jwt.sign(payload, Buffer.from(Ebsidian.extension.secret, "base64"))
 }
 
 // https://dev.twitch.tv/docs/extensions/reference#get-live-channels-with-extension-activated
-TwitchEBS.generateMockBroadcasterToken = function(payload) {
+Ebsidian.generateMockBroadcasterToken = function(payload) {
     payload.exp = payload.exp || Date.now() + EXPIRATION_TIME
     payload.role = payload.role || "external"
 
-    return TwitchEBS.generateToken({
+    return Ebsidian.generateToken({
         "role": "broadcaster",
         "user_id": "1234567890",
         "channel_id": "1234567890",
@@ -41,20 +41,20 @@ TwitchEBS.generateMockBroadcasterToken = function(payload) {
     })
 }
 
-TwitchEBS.retrieveLiveChannels = async function() {
+Ebsidian.retrieveLiveChannels = async function() {
     let response = await fetchquest({
-        "url": TWITCH_EXT_LIVE_CHANNELS_URL({"clientId": TwitchEBS.extension.id}),
-        "headers": {"Client-ID": TwitchEBS.extension.id}
+        "url": TWITCH_EXT_LIVE_CHANNELS_URL({"clientId": Ebsidian.extension.id}),
+        "headers": {"Client-ID": Ebsidian.extension.id}
     })
 
     return response.channels
 }
 
 // https://dev.twitch.tv/docs/extensions/reference#send-extension-chat-message
-TwitchEBS.sendChatMessage = async function chat(channelId, text) {
+Ebsidian.sendChatMessage = async function chat(channelId, text) {
     channelId = channelId + ""
 
-    const token = TwitchEBS.generateToken({
+    const token = Ebsidian.generateToken({
         "role": "broadcaster",
         "user_id": channelId,
         "channel_id": channelId,
@@ -62,14 +62,14 @@ TwitchEBS.sendChatMessage = async function chat(channelId, text) {
 
     return await new FetchQuest({
         "url": TWITCH_EXT_CHAT_URL({
-            "clientId": TwitchEBS.extension.id,
-            "extensionVersion": TwitchEBS.extension.version,
+            "clientId": Ebsidian.extension.id,
+            "extensionVersion": Ebsidian.extension.version,
             "channelId": channelId,
         }),
         "method": "POST",
         "headers": {
             "Content-Type": "application/json",
-            "Client-ID": TwitchEBS.extension.id,
+            "Client-ID": Ebsidian.extension.id,
             "Authorization": `Bearer ${token}`,
         },
         "body": {"text": text},
@@ -77,10 +77,10 @@ TwitchEBS.sendChatMessage = async function chat(channelId, text) {
 }
 
 // https://dev.twitch.tv/docs/extensions/reference#send-extension-pubsub-message
-TwitchEBS.sendPubsubMessage = async function(channelId, target, message) {
+Ebsidian.sendPubsubMessage = async function(channelId, target, message) {
     channelId = channelId + ""
 
-    const token = TwitchEBS.generateToken({
+    const token = Ebsidian.generateToken({
         "role": "external",
         "user_id": channelId,
         "channel_id": channelId,
@@ -96,7 +96,7 @@ TwitchEBS.sendPubsubMessage = async function(channelId, target, message) {
         }),
         "headers": {
             "Content-Type": "application/json",
-            "Client-ID": TwitchEBS.extension.id,
+            "Client-ID": Ebsidian.extension.id,
             "Authorization": `Bearer ${token}`,
         },
         "body": {
@@ -107,11 +107,11 @@ TwitchEBS.sendPubsubMessage = async function(channelId, target, message) {
     })
 }
 
-TwitchEBS.broadcastPubsubMessage = async function(channelId, message) {
-    TwitchEBS.sendPubsubMessage(channelId, "broadcast", message)
+Ebsidian.broadcastPubsubMessage = async function(channelId, message) {
+    Ebsidian.sendPubsubMessage(channelId, "broadcast", message)
 }
 
-// TODO:
+// TODO: Configuration
 // https://dev.twitch.tv/docs/extensions/reference#set-extension-required-configuration
 // https://dev.twitch.tv/docs/extensions/reference#set-extension-configuration-segment
 // https://dev.twitch.tv/docs/extensions/reference#get-extension-channel-configuration
