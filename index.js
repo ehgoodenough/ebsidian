@@ -10,6 +10,8 @@ const TWITCH_EXT_PUBSUB_URL = new Urrl("https://api.twitch.tv/extensions/message
 
 const EXPIRATION_TIME = 1000
 
+const DODECADEX_USER_ID = "278250901"
+
 const Ebsidian = module.exports = {
     "extension": {
         "id": undefined,
@@ -21,7 +23,7 @@ const Ebsidian = module.exports = {
 Ebsidian.generateToken = function(payload) {
     payload.exp = payload.exp || Date.now() + EXPIRATION_TIME
     payload.role = payload.role || "external"
-    payload.user_id = payload.user_id || "1234567890"
+    payload.user_id = payload.user_id || DODECADEX_USER_ID
 
     return jwt.sign(payload, Buffer.from(Ebsidian.extension.secret, "base64"))
 }
@@ -56,7 +58,6 @@ Ebsidian.sendChatMessage = async function chat(channelId, text) {
 
     const token = Ebsidian.generateToken({
         "role": "broadcaster",
-        "user_id": channelId,
         "channel_id": channelId,
     })
 
