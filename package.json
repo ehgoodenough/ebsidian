@@ -1,6 +1,6 @@
 {
   "name": "ebsidian",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An easy-to-use library for your Twitch Extension EBS.",
   "keywords": ["twitch", "extension", "twitch extension", "ebs"],
   "author": "Andrew McPherson <@ehgoodenough>",
