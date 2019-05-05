@@ -44,7 +44,7 @@ Ebsidian.generateMockBroadcasterToken = function(payload) {
 }
 
 Ebsidian.retrieveLiveChannels = async function() {
-    let response = await fetchquest({
+    let response = await new FetchQuest({
         "url": TWITCH_EXT_LIVE_CHANNELS_URL({"clientId": Ebsidian.extension.id}),
         "headers": {"Client-ID": Ebsidian.extension.id}
     })
